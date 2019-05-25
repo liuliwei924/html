@@ -17,19 +17,20 @@ export default {
   name: 'edit-pwd',
   props: {
     isShowPwd: Boolean,
-    editInfo: Object
+    curCustomerId: String
   },
   data () {
     return {
       isEdit: false,
       form: {
+        curCustomerId: '',
         password: ''
       }
     }
   },
   watch: {
-    editInfo (obj) {
-      this.form.custId = obj.custId
+    curCustomerId (obj) {
+      this.form.curCustomerId = obj
     }
   },
   methods: {
@@ -37,14 +38,18 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           if (this.form.password.length < 6) {
-            this.$message({message: '密码长度必须大于等于6位', type: 'warnning'})
+            this.$warning('密码长度必须大于等于6位', 'warning')
+            return
+          }
+          if (!this.form.curCustomerId || this.form.curCustomerId.length === 0) {
+            this.$warning('请选择一个用户', 'warning')
             return
           }
           this.$ajax({
-            url: '/store/account/config/foreignExportConf/addForeginExport',
+            url: '/store/account/config/operator//resetPwd',
             data: this.form,
             success: data => {
-              this.$message({message: '重置密码成功', type: 'success'})
+              this.$warning('重置密码成功', 'success')
               this.resetData()
               this.$emit('close', 'refresh')
             }
@@ -58,6 +63,7 @@ export default {
     },
     resetData () {
       this.form = {
+        curCustomerId: '',
         password: ''
       }
     }

@@ -496,7 +496,7 @@ export default {
   },
   methods: {
     ctrlHandle () {
-      if (!this.orders) {
+      if (!this.ids) {
         this.$message('请选择操作的信息')
         return
       }
@@ -506,8 +506,8 @@ export default {
         type: 'info'
       }).then(() => {
         this.$ajax({
-          url: '/account/work/payback/batchCheck',
-          data: {ids: this.orders},
+          url: '/store/account/work/backDeal/batchCheck',
+          data: {ids: this.ids},
           success: data => {
             this.$msg('核算成功!')
             this.searchHandle()
@@ -554,6 +554,11 @@ export default {
     },
     // table表格选择
     selectChange (arr) {
+      let ids = ''
+      for (let i = 0; i < rows.length; i++) {
+        ids += ',' + rows[i]['recordId']
+      }
+      this.ids = ids.substr(1)
       this.orders = []
       arr.forEach(item => {
         this.orders.push({

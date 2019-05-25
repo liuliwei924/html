@@ -144,7 +144,7 @@
 	      width="200">
 	      <template slot-scope="scope">
           <el-button type="text" size="small" @click="editHandle(scope.row)" v-if="userType === '1'">编辑</el-button>
-          <el-button type="text" size="small" @click="editInfo(scope.row)">编辑信息</el-button>
+          <el-button type="text" size="small" @click="editInfo(scope.row.customerId)">编辑信息</el-button>
           <el-button type="text" size="small" @click="editWeixin(scope.row.customerId, scope.row.telephone)" v-if="userType === '1'">微信变更</el-button>
           <el-button type="text" size="small" @click="resetPwd(scope.row.customerId)" v-if="userType === '1'">重置密码</el-button>
 	      </template>
@@ -178,7 +178,7 @@
       @change="infoEditHandle" />
       <!-- 微信变更弹窗 -->
       <weixin-edit v-model="isWexinShow" :customerId="customerId" :oldTel="oldTel" @change="weixinEditHandle" />
-      <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :editInfo="editInfo"/>
+      <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :curCustomerId="curCustomerId"/>
 	</div>
 </template>
 
@@ -223,6 +223,7 @@ export default {
       tableData: [],
       totalRecord: 1,
       isShowPwd: false,
+      curCustomerId: '',
       editInfo: {},
       isShow: false, // 弹窗是否显示
       isInfoShow: false, // 编辑信息弹窗是否显示
