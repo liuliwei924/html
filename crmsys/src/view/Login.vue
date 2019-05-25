@@ -9,11 +9,11 @@
       <div class="login-logo"></div>
       <div class="login-wrapper">
         <div class="login-content">
-          <div class="login-content__header clearfix">
-            <!-- <div class="login-content__tab fl" :class="{active: tab === 2}" @click.stop="switchTab(2)">扫码登录</div>
-            <div class="login-content__tab fl" :class="{active: tab === 1}" @click.stop="switchTab(1)">微信登录</div>  -->
+         <!--  <div class="login-content__header clearfix">
+            <div class="login-content__tab fl" :class="{active: tab === 2}" @click.stop="switchTab(2)">扫码登录</div>
+            <div class="login-content__tab fl" :class="{active: tab === 1}" @click.stop="switchTab(1)">微信登录</div>
             <div class="login-content__tab fl" :class="{active: tab === 3}" @click.stop="switchTab(3)">手机登录</div>
-          </div>
+          </div>  -->
           <div class="login-content__body">
             <!-- 微信扫码登录 -->
             <div id="wxLogin" class="login-content__wx" v-show="tab === 1"></div>
@@ -22,10 +22,10 @@
               <div class="app-scan">
                 <img :src="appQrcode" alt="">
               </div>
-              <div class="two-app-btn">
+              <!-- <div class="two-app-btn">
                 <el-button class="download-btn" @click.prevent="download">下载小小云APP</el-button>
                 <el-button class="download-btn" @click.prevent="downloadACR">下载ACR</el-button>
-              </div>
+              </div> -->
             </el-form>
             <!-- 手机登录 -->
             <el-form :model="codeForm" ref="codeForm" class="login-content__panel" v-show="tab == 3">
@@ -38,26 +38,15 @@
               <div class="login-content__group">
                 <i class="login-icon__code fl"></i>
                 <el-form-item class="fl" prop="password" :rules="{required: true, message: '请输入您的密码', trigger: 'blur'}">
-                  <el-input v-model="codeForm.password" placeholder="请输入您的密码"></el-input>
+                  <el-input :type="pwdType" placeholder="请输入您的密码" v-model="codeForm.password">
+                  </el-input>
                 </el-form-item>
-                <!-- <span class="login-text__code" @click="getCode">{{codeText}}</span> -->
+                <i class="login-icon__pass fl" v-if="isPass" style="margin-left: 40px;" @click="showPwd()"></i>
               </div>
               <el-button native-type="submit" class="login-btn" @click.prevent="codeLogin">登&nbsp;录</el-button>
             </el-form>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="mask-box" @click="markClose" v-if="markShow">
-      <div class="mark-img">
-        <div class="mark-title">请使用手机浏览器扫一扫下载</div>
-        <img :src="markImg" @click.stop="">
-      </div>
-    </div>
-    <div class="mask-box" @click="markACRClose" v-if="markACRShow">
-      <div class="mark-img">
-        <div class="mark-title">请使用手机浏览器扫一扫下载</div>
-        <img :src="markACRImg" @click.stop="">
       </div>
     </div>
   </div>
@@ -71,6 +60,7 @@ export default {
   data () {
     let dev = (process.env.NODE_ENV === 'production')
     return {
+      pwdType: 'password',
       appQrcode: '',
       tab: 3,
       codeForm: {
@@ -89,6 +79,16 @@ export default {
       markShow: false,
       markACRImg: 'https://kefu.xxjr.com/store/sysAction/downloadACRApp',
       markACRShow: false
+    }
+  },
+  computed: {
+    isPass () {
+      if (this.codeForm.password && this.codeForm.password.length > 0) {
+        return true
+      } else {
+        this.pwdType = 'password'
+        return false
+      }
     }
   },
   watch: {
@@ -216,40 +216,36 @@ export default {
     })
   },
   mounted () {
-    this.getSessionId()
+    // this.getSessionId()
     // 生成微信登录二维码
-    this.createCode()
+    // this.createCode()
     // 初始化粒子动画
     canvasParticle({el: this.$refs.particle})
   },
   methods: {
-    getSessionId () {
-      let _this = this
-      window.$axios.get('https://kefu.xxjr.com/store/sysAction/sessionIdDeal', {}).then(function (res) {
-        let sessionId = res.data.attr.signId
-        _this.appQrcode = res.data.attr.url + '?sessionId=' + sessionId
-        if (sessionId) {
-          _this.$localStorage('sessionId', sessionId)
-          _this.$webSocket.send({cmdName: '0001', sessionId: sessionId, signId: '', success: true})
-        }
-      }).catch(function (error) {
-        console.log(error)
-      })
+    showPwd () {
+      if (this.pwdType === 'password') {
+        this.pwdType = ''
+      } else {
+        this.pwdType = 'password'
+      }
     },
+    // getSessionId () {
+    //   let _this = this
+    //   window.$axios.get('https://kefu.xxjr.com/store/sysAction/sessionIdDeal', {}).then(function (res) {
+    //     let sessionId = res.data.attr.signId
+    //     _this.appQrcode = res.data.attr.url + '?sessionId=' + sessionId
+    //     if (sessionId) {
+    //       _this.$localStorage('sessionId', sessionId)
+    //       _this.$webSocket.send({cmdName: '0001', sessionId: sessionId, signId: '', success: true})
+    //     }
+    //   }).catch(function (error) {
+    //     console.log(error)
+    //   })
+    // },
     // 切换登录方式
     switchTab (index) {
       this.tab = index
-    },
-    // 显示微信登陆二维码
-    createCode () {
-      /* eslint-disable no-new */
-      new window.WxLogin({
-        id: 'wxLogin',
-        appid: 'wx6790df17e01c3653',
-        scope: 'snsapi_login',
-        redirect_uri: encodeURI('https://www.xxjr.com/page/cust/wxLogin?project=xxcrm'),
-        href: 'https://kefu.xxjr.com/xxcrmpage/static/css/wxLogin.css'
-      })
     },
     // 获取验证码
     getCode () {
@@ -316,6 +312,15 @@ export default {
 </script>
 
 <style lang="less" scope>
+.show-pwd {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 16px;
+    color: $dark_gray;
+    cursor: pointer;
+    user-select: none;
+  }
 .app-scan{
   text-align: center;
   padding: .20px;

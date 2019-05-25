@@ -212,6 +212,7 @@
     <!-- 业务操作区域 -->
     <div class="header__control">
       <el-button icon="setting" @click="orderSet">设置专属单</el-button>
+      <el-button icon="setting" @click="ctrlHandle">核算</el-button>
     </div>
     <!-- table表格数据 -->
     <el-table
@@ -402,6 +403,7 @@ export default {
         groupName: '',
         teamName: ''
       },
+      ids: '',
       groupNameList: [], // 门店组名列表
       teamNameList: [], // 门店队名列表
       netOrgList: [], // 网销门店数据
@@ -493,6 +495,26 @@ export default {
     }
   },
   methods: {
+    ctrlHandle () {
+      if (!this.orders) {
+        this.$message('请选择操作的信息')
+        return
+      }
+      this.$confirm('是否确定核算所选记录?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        this.$ajax({
+          url: '/account/work/payback/batchCheck',
+          data: {ids: this.orders},
+          success: data => {
+            this.$msg('核算成功!')
+            this.searchHandle()
+          }
+        })
+      }).catch(() => {})
+    },
     // 获取网销门店
     getNetOrgList () {
       this.$ajax({

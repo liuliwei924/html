@@ -125,7 +125,8 @@ export default {
     let orderDeal = {
       3: {text: '预约上门', isShow: false},
       4: {text: '添加上门', isShow: false},
-      5: {text: '签单处理', isShow: false}
+      5: {text: '签单处理', isShow: false},
+      6: {text: '回款处理', isShow: false}
     }
     return {
       dialogImageUrl: '',

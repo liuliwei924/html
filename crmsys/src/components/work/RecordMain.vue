@@ -95,7 +95,6 @@
 </template>
 
 <script>
-import {expireStore} from '@/utils/utils'
 const TIME_COUNT = 60
 // 主要信息子组件
 export default {
@@ -167,20 +166,6 @@ export default {
     },
     telOut () {
       this.$refs.teldiv.innerText = this.form.curTelephone
-    },
-    clickTel (tel) {
-      if (this.mainInfo.notHideTel) {
-        tel = this.mainInfo.notHideTel
-      }
-      let that = this
-      this.$confirm('确认拨号吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'success'
-      }).then(() => {
-        that.$webSocket.send({cmdName: '0004', sessionId: window.localStorage.getItem('sessionId'), signId: expireStore('signId'), success: true, telephone: tel})
-      }, () => {
-      })
     },
     dealCountDown () {
       if (!this.timer) {

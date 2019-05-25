@@ -19,7 +19,7 @@ import formStore from '@/utils/form-store'
 import Extend from '@/utils/extend'
 import TableList from '@/components/TableList'
 // import WebSocketClient from '@/utils/web-socket.js'
-const WebSocketClient = require('@/utils/web-socket.js')
+// const WebSocketClient = require('@/utils/web-socket.js')
 
 // 引入样式
 import 'element-ui/lib/theme-default/index.css'
@@ -49,22 +49,22 @@ Vue.prototype.$echarts = window.echarts
 
 Vue.config.productionTip = false
 
-let socketUrl = (process.env.NODE_ENV === 'production') ? 'wss://newapp.xxjr.com/pc' : 'ws://192.168.10.208:82/pc'
-router.beforeEach((to, from, next) => {
-  if (!Vue.prototype.$webSocket) {
-    const webSocket = WebSocketClient.init({
-      path: `${socketUrl}`,
-      success () {
-        next()
-      },
-      router,
-      vue: Vue
-    })
-    Vue.prototype.$webSocket = webSocket
-  } else {
-    next()
-  }
-})
+// let socketUrl = (process.env.NODE_ENV === 'production') ? 'wss://newapp.xxjr.com/pc' : 'ws://192.168.10.208:82/pc'
+// router.beforeEach((to, from, next) => {
+//   if (!Vue.prototype.$webSocket) {
+//     const webSocket = WebSocketClient.init({
+//       path: `${socketUrl}`,
+//       success () {
+//         next()
+//       },
+//       router,
+//       vue: Vue
+//     })
+//     Vue.prototype.$webSocket = webSocket
+//   } else {
+//     next()
+//   }
+// })
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
