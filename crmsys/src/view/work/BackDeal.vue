@@ -555,8 +555,8 @@ export default {
     // table表格选择
     selectChange (arr) {
       let ids = ''
-      for (let i = 0; i < rows.length; i++) {
-        ids += ',' + rows[i]['recordId']
+      for (let i = 0; i < arr.length; i++) {
+        ids += ',' + arr[i]['recordId']
       }
       this.ids = ids.substr(1)
       this.orders = []
