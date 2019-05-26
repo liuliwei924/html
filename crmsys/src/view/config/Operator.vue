@@ -145,6 +145,7 @@
           <el-button type="text" size="small" @click="editHandle(scope.row)" v-if="userType === '1'">编辑</el-button>
           <el-button type="text" size="small" @click="editInfo(scope.row)">编辑信息</el-button>
           <el-button type="text" size="small" @click="editWeixin(scope.row.customerId, scope.row.telephone)" v-if="userType === '1'">微信变更</el-button>
+          <el-button type="text" size="small" @click="resetPwd(scope.row.customerId)" v-if="userType === '1'">重置密码</el-button>
 	      </template>
 	    </el-table-column>
     </el-table>
@@ -174,6 +175,7 @@
       :gradeCode="gradeCode"
       :isAllotOrder="isAllotOrder"
       @change="infoEditHandle" />
+      <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :curCustomerId="curCustomerId"/>
       <!-- 微信变更弹窗 -->
       <weixin-edit v-model="isWexinShow" :customerId="customerId" :oldTel="oldTel" @change="weixinEditHandle" />
       <el-dialog class="width650" title="增加用户" v-model="showAdduser">
@@ -200,6 +202,7 @@
 import OperatorEdit from '@/components/config/OperatorEdit'
 import OperInfoEdit from '@/components/config/OperInfoEdit'
 import WeixinEdit from '@/components/config/WeixinEdit'
+import EditPwd from '@/components/config/EditPwd'
 // 操作员列表页面
 export default {
   name: 'operator',
@@ -235,6 +238,8 @@ export default {
       loading: false,
       tableData: [],
       totalRecord: 1,
+      isShowPwd: false,
+      curCustomerId: '',
       isShow: false, // 弹窗是否显示
       isInfoShow: false, // 编辑信息弹窗是否显示
       isWexinShow: false, // 微信弹窗是否显示
@@ -273,6 +278,17 @@ export default {
     }
   },
   methods: {
+    closePwdDialog (str) {
+      this.isShowPwd = false
+      this.editInfo = {}
+      if (str) {
+        this.searchHandle()
+      }
+    },
+    resetPwd (row) {
+      this.editInfo = row
+      this.isShowPwd = true
+    },
     getGrades () {
       this.$ajax({
         url: '/store/account/config/operator/queryGradeList',
