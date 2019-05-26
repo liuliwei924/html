@@ -73,9 +73,8 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-button
-          :loading="loading"
-          @click="searchHandle">查询</el-button>
+         <el-button :loading="loading" @click="searchHandle">查询</el-button>
+         <el-button  class="kf-btn" @click="addUser()">增加用户</el-button>
       </el-form>
     </div>
     <!-- table表格数据 -->
@@ -144,9 +143,8 @@
 	      width="200">
 	      <template slot-scope="scope">
           <el-button type="text" size="small" @click="editHandle(scope.row)" v-if="userType === '1'">编辑</el-button>
-          <el-button type="text" size="small" @click="editInfo(scope.row.customerId)">编辑信息</el-button>
+          <el-button type="text" size="small" @click="editInfo(scope.row)">编辑信息</el-button>
           <el-button type="text" size="small" @click="editWeixin(scope.row.customerId, scope.row.telephone)" v-if="userType === '1'">微信变更</el-button>
-          <el-button type="text" size="small" @click="resetPwd(scope.row.customerId)" v-if="userType === '1'">重置密码</el-button>
 	      </template>
 	    </el-table-column>
     </el-table>
@@ -178,7 +176,23 @@
       @change="infoEditHandle" />
       <!-- 微信变更弹窗 -->
       <weixin-edit v-model="isWexinShow" :customerId="customerId" :oldTel="oldTel" @change="weixinEditHandle" />
-      <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :curCustomerId="curCustomerId"/>
+      <el-dialog class="width650" title="增加用户" v-model="showAdduser">
+      <el-form ref="form2" :model="adduserForm">
+        <el-form-item label="手机号">
+          <el-input v-model="adduserForm.telephone" :maxlength="11"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input v-model="adduserForm.userName" :maxlength="6"></el-input>
+        </el-form-item>
+        <el-form-item label="渠道">
+          <el-input v-model="adduserForm.channelDetail" :maxlength="50"></el-input>
+        </el-form-item>
+        <el-form-item class="kf-dialog-btn">
+          <el-button @click="addUserSubmit" :disabled="isLoading" :loading="isLoading">确认</el-button>
+          <el-button @click="showAdduser = false">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
 	</div>
 </template>
 
@@ -186,7 +200,6 @@
 import OperatorEdit from '@/components/config/OperatorEdit'
 import OperInfoEdit from '@/components/config/OperInfoEdit'
 import WeixinEdit from '@/components/config/WeixinEdit'
-import EditPwd from '@/components/config/EditPwd'
 // 操作员列表页面
 export default {
   name: 'operator',
@@ -222,12 +235,11 @@ export default {
       loading: false,
       tableData: [],
       totalRecord: 1,
-      isShowPwd: false,
-      curCustomerId: '',
-      editInfo: {},
       isShow: false, // 弹窗是否显示
       isInfoShow: false, // 编辑信息弹窗是否显示
       isWexinShow: false, // 微信弹窗是否显示
+      showAdduser: false,
+      isLoading: false,
       editData: {},
       roleList: [], // 权限角色列表
       userOrgs, // 门店数据
@@ -244,7 +256,12 @@ export default {
       // 等级
       gradeCode: {},
       gradeCodes: {},
-      userType: userType
+      userType: userType,
+      adduserForm: {
+        userName: '',
+        telephone: '',
+        channelDetail: ''
+      }
     }
   },
   created () {
@@ -256,17 +273,6 @@ export default {
     }
   },
   methods: {
-    closePwdDialog (str) {
-      this.isShowPwd = false
-      this.editInfo = {}
-      if (str) {
-        this.searchHandle()
-      }
-    },
-    resetPwd (row) {
-      this.editInfo = row
-      this.isShowPwd = true
-    },
     getGrades () {
       this.$ajax({
         url: '/store/account/config/operator/queryGradeList',
@@ -281,6 +287,28 @@ export default {
           this.gradeCodes = objs
         }
       })
+    },
+    addUserSubmit () {
+      this.isLoading = true
+      this.$ajax({
+        url: '/store/account/config/operator/addUser',
+        data: this.adduserForm,
+        success: data => {
+          this.$message({message: '添加成功', type: 'success'})
+          this.showAdduser = false
+          this.isLoading = false
+        },
+        fail: data => {
+          this.$msg(data.message)
+          this.isLoading = false
+        }
+      })
+      this.adduserForm.telephone = ''
+      this.adduserForm.channelDetail = ''
+      this.adduserForm.userName = ''
+    },
+    addUser () {
+      this.showAdduser = true
     },
     // 查询权限角色列表
     queryRole () {
@@ -403,8 +431,7 @@ export default {
   components: {
     OperatorEdit,
     OperInfoEdit,
-    WeixinEdit,
-    EditPwd
+    WeixinEdit
   }
 }
 </script>
