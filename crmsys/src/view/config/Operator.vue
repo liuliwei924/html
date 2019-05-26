@@ -178,8 +178,8 @@
       <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :curCustomerId="curCustomerId"/>
       <!-- 微信变更弹窗 -->
       <weixin-edit v-model="isWexinShow" :customerId="customerId" :oldTel="oldTel" @change="weixinEditHandle" />
-      <el-dialog class="width650" title="增加用户" v-model="showAdduser">
-      <el-form ref="form2" :model="adduserForm">
+      <el-dialog class="edit-dialog" title="增加用户" v-model="showAdduser">
+      <el-form ref="form2" :model="adduserForm" label-width="150px">
         <el-form-item label="手机号">
           <el-input v-model="adduserForm.telephone" :maxlength="11"></el-input>
         </el-form-item>
@@ -239,7 +239,7 @@ export default {
       tableData: [],
       totalRecord: 1,
       isShowPwd: false,
-      curCustomerId: '',
+      curCustomerId: -1,
       isShow: false, // 弹窗是否显示
       isInfoShow: false, // 编辑信息弹窗是否显示
       isWexinShow: false, // 微信弹窗是否显示
@@ -285,8 +285,8 @@ export default {
         this.searchHandle()
       }
     },
-    resetPwd (row) {
-      this.editInfo = row
+    resetPwd (customerId) {
+      this.curCustomerId = customerId
       this.isShowPwd = true
     },
     getGrades () {
@@ -447,7 +447,8 @@ export default {
   components: {
     OperatorEdit,
     OperInfoEdit,
-    WeixinEdit
+    WeixinEdit,
+    EditPwd
   }
 }
 </script>
