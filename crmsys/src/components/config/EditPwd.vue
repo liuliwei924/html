@@ -52,7 +52,6 @@ export default {
     },
     resetData () {
       this.form = {
-        curCustomerId: '',
         password: ''
       }
     }
