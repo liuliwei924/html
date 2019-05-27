@@ -115,7 +115,7 @@ export default {
         }
       })
     },
-    // 关 闭弹窗
+    // 关闭弹窗
     closeDialog (val) {
       this.showDialog = false
       if (val === 'refresh') this.searchTable(this.currentPage)
