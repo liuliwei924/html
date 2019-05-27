@@ -1,15 +1,20 @@
 <template>
   <div class="content-box">
     <div class="header__search clearfix">
-      <el-input placeholder="系统Key" v-model="searchForm.paramCode" style="width: 200px;"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="searchTable(1)">查询
-      </el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="add">新增系统参数</el-button>
+      <el-form :model="searchForm">
+        <el-form-item
+          label="系统Key:">
+          <el-input placeholder="系统Key" v-model="searchForm.paramCode" style="width: 200px;"/>
+        </el-form-item>
+        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="searchTable(1)">查询
+        </el-button>
+        <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="add">新增系统参数</el-button>
+      </el-form>
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="paramCode" label="系统Key" width="220"/>
       <el-table-column prop="paramValue" label="系统值" width="220"/>
-      <el-table-column prop="paramName" label="描述"/>
+      <el-table-column prop="paramName" label="描述" width="220"/>
       <el-table-column prop="createTime" label="创建时间" width="200"/>
       <el-table-column prop="updateTime" label="修改时间" width="200"/>
       <el-table-column prop="updateBy" label="最后修改人" width="150"/>
@@ -30,7 +35,7 @@
       layout="total, sizes, prev, pager, next"
       :total="totalRecords">
     </el-pagination>
-    <edit-sysparams :isShow="showDialog" @close="closeDialog" :sysParamsInfo="sysParamsInfo" :isEdit="isEdit"/>
+    <edit-sys-params :isShow="showDialog" @close="closeDialog" :sysParamsInfo="sysParamsInfo" :isEdit="isEdit"/>
 </div>
 
 </template>
