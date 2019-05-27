@@ -15,7 +15,7 @@
       <el-table-column prop="updateBy" label="最后修改人" width="150"/>
       <el-table-column label="操作" align="center" width="250" fixed="right">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="edit(scope.row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="editShow(scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="deleteParams(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -30,7 +30,7 @@
       layout="total, sizes, prev, pager, next"
       :total="totalRecords">
     </el-pagination>
-    <edit-sysparams :isShow="showDialog" @close="closeDialog" :sysParamsInfo="sysParamsInfo" :isEdit="isEdit"/>
+    <edit-sys-params :isShow="showDialog" @close="closeDialog" :sysParamsInfo="sysParamsInfo" :isEdit="isEdit"/>
 </div>
 
 </template>
@@ -84,7 +84,8 @@ export default {
       this.sysParamsInfo = {}
     },
     // 编辑
-    edit (row) {
+    editShow (row) {
+      console.info(111111)
       this.isEdit = true
       this.showDialog = true
       this.sysParamsInfo = row
