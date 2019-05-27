@@ -16,21 +16,14 @@
 export default {
   name: 'edit-pwd',
   props: {
-    isShowPwd: Boolean,
-    curCustomerId: Number
+    isShowPwd: Boolean
   },
   data () {
     return {
       isEdit: false,
       form: {
-        curCustomerId: '',
         password: ''
       }
-    }
-  },
-  watch: {
-    curCustomerId (obj) {
-      this.form.curCustomerId = obj
     }
   },
   methods: {
@@ -41,12 +34,8 @@ export default {
             this.$msg('密码长度必须大于等于6位', 'warning')
             return
           }
-          if (!this.form.curCustomerId || this.form.curCustomerId <= 0) {
-            this.$msg('请选择一个用户', 'warning')
-            return
-          }
           this.$ajax({
-            url: '/store/account/config/operator//resetPwd',
+            url: '/store/account/user/info/resetPwd',
             data: this.form,
             success: data => {
               this.$msg('重置密码成功', 'success')

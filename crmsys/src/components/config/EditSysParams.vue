@@ -52,8 +52,8 @@ export default {
               url: '/store/account/config/paramset/update',
               data: this.form,
               success: data => {
-                this.$message({message: '删除成功', type: 'success'})
-                this.searchTable(this.currentPage)
+                this.$message({message: '修改成功', type: 'success'})
+                this.$emit('close', 'refresh')
               }
             })
           } else {

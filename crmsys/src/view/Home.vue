@@ -9,7 +9,15 @@
           <span>暂停分单</span>
         </el-tooltip>
         <el-button icon="information" class="admin-user-notify fl" @click="notifyHandle">{{notifyNum}}</el-button>
-        <div class="admin-user-name fl">当前账号：<span id="homeUserName">{{userName}}</span></div>
+        <div class="admin-user-name fl"> 
+          <el-dropdown @command="resetCommand">
+            <span style="color:#fff;">当前账号：</span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="1">重置密码</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <span id="homeUserName">{{userName}}</span>
+        </div>
         <div class="admin-user-logout fl v-dropdown-menu">
           <el-dropdown  @command="handleCommand">
             <span class="el-dropdown-link">
@@ -95,6 +103,7 @@
         <el-button type="warning" @click="switchBusy">忙碌中</el-button>
       </div>
     </div>
+    <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog"/>
   </div>
 </template>
 
@@ -103,6 +112,7 @@ import {Loading, MessageBox} from 'element-ui'
 import {expireStore} from '@/utils/utils'
 import Notify from '@/components/all/Notify'
 import RollNotice from '@/components/all/RollNotice'
+import EditPwd from '@/components/config/EditPwd'
 let times = []
 let h = null
 var fiveMin = 0
@@ -138,6 +148,8 @@ export default {
       menus,
       subMenus,
       notices: [],
+      isShowPwd: false,
+      curCustomerId: -1,
       userStatus: [{type: '在线', status: 1}, {type: '忙碌', status: 2}, {type: '离开', status: 3}, {type: '离线', status: 0}],
       currStatus: '在线',
       curIcon: '1',
@@ -311,6 +323,19 @@ export default {
     })
   },
   methods: {
+    closePwdDialog (str) {
+      this.isShowPwd = false
+      if (str) {
+        this.searchHandle()
+      }
+    },
+    resetCommand (command) {
+      switch (command) {
+        case '1':
+          this.isShowPwd = true
+          break
+      }
+    },
     slideMenu (ref) {
       let disType = this.$refs[ref][0].style.display
       this.$refs[ref][0].style.display = disType === 'block' ? 'none' : 'block'
@@ -711,7 +736,8 @@ export default {
   },
   components: {
     Notify,
-    RollNotice
+    RollNotice,
+    EditPwd
   }
 }
 </script>

@@ -164,6 +164,7 @@ export default {
         orgId: obj['orgId'] || '',
         orgName: obj['orgName'] || '',
         orgNo: obj['orgNo'] || '',
+        province: obj['province'] || '',
         cityName: obj['cityName'] || '',
         address: obj['address'] || '',
         managerName: obj['managerName'] || '',

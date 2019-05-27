@@ -173,9 +173,17 @@ export default {
     },
     // 编辑
     editHandle (row) {
-      this.orgInfo = Object.assign({}, row)
-      this.isEdit = true
-      this.visible = true
+      this.$ajax({
+        url: '/store/account/config/orgCfg/findByOne',
+        data: {orgId: row.orgId},
+        success: data => {
+          if (data.rows.length > 0) {
+            this.orgInfo = data.rows[0]
+            this.isEdit = true
+            this.visible = true
+          }
+        }
+      })
     },
     // 查询
     searchHandle () {

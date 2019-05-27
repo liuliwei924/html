@@ -98,4 +98,27 @@ export default {
   text-align: left;
   padding-left: 100px;
 }
+.xx-form-btn {
+  border-radius: 0;
+  color: #fff;
+  border: none;
+  background: #0c78b1; /*深蓝色*/
+  min-width: 80px;
+  height: 36px;
+  cursor: pointer;
+  outline: none;
+  border-right: 10px;
+}
+.t4 {/*红色*/
+  background: #dd504c;
+}
+.t3 {/*绿色*/
+  background: #5eb95e;
+}
+.t2 {/*灰色*/
+  color: #999;
+  background: #f9f9f9;
+  border: 1px solid #dcdcdc;
+  margin: 0 10px;
+}
 </style>
