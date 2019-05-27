@@ -95,7 +95,7 @@
       <el-table-column
         prop="telephone"
         label="手机号"
-        min-width="110">
+        min-width="120">
       </el-table-column>
       <el-table-column
         prop="orgNo"
@@ -145,6 +145,7 @@
           <el-button type="text" size="small" @click="editHandle(scope.row)" v-if="userType === '1'">编辑</el-button>
           <el-button type="text" size="small" @click="editInfo(scope.row)">编辑信息</el-button>
           <el-button type="text" size="small" @click="editWeixin(scope.row.customerId, scope.row.telephone)" v-if="userType === '1'">微信变更</el-button>
+          <el-button type="text" size="small" @click="resetPwd" v-if="userType === '1'">重置密码</el-button>
 	      </template>
 	    </el-table-column>
     </el-table>
@@ -174,6 +175,7 @@
       :gradeCode="gradeCode"
       :isAllotOrder="isAllotOrder"
       @change="infoEditHandle" />
+      <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" />
       <!-- 微信变更弹窗 -->
       <weixin-edit v-model="isWexinShow" :customerId="customerId" :oldTel="oldTel" @change="weixinEditHandle" />
       <el-dialog class="edit-dialog" title="增加用户" v-model="showAdduser">
@@ -200,6 +202,7 @@
 import OperatorEdit from '@/components/config/OperatorEdit'
 import OperInfoEdit from '@/components/config/OperInfoEdit'
 import WeixinEdit from '@/components/config/WeixinEdit'
+import EditPwd from '@/components/config/EditPwd'
 // 操作员列表页面
 export default {
   name: 'operator',
@@ -236,7 +239,6 @@ export default {
       tableData: [],
       totalRecord: 1,
       isShowPwd: false,
-      curCustomerId: -1,
       isShow: false, // 弹窗是否显示
       isInfoShow: false, // 编辑信息弹窗是否显示
       isWexinShow: false, // 微信弹窗是否显示
@@ -275,6 +277,15 @@ export default {
     }
   },
   methods: {
+    closePwdDialog (str) {
+      this.isShowPwd = false
+      if (str) {
+        this.searchHandle()
+      }
+    },
+    resetPwd () {
+      this.isShowPwd = true
+    },
     getGrades () {
       this.$ajax({
         url: '/store/account/config/operator/queryGradeList',
@@ -299,6 +310,7 @@ export default {
           this.$message({message: '添加成功', type: 'success'})
           this.showAdduser = false
           this.isLoading = false
+          this.searchHandle()
         },
         fail: data => {
           this.$msg(data.message)
@@ -433,7 +445,8 @@ export default {
   components: {
     OperatorEdit,
     OperInfoEdit,
-    WeixinEdit
+    WeixinEdit,
+    EditPwd
   }
 }
 </script>
