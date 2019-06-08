@@ -78,7 +78,7 @@
       @change="orderRateChange" style="float:left;margin-left:4px;"></el-rate>
     <br>
     <abandon-follow v-model="isAbandonShow" :abandonData="abandonData" @change="abandonEditHandle" />
-    <file-deal v-model="isUpLoadShow" :applyId="applyId" :upLoadData="upLoadData" @change="uploadEditHandle" @showBigImg="showBigImg" />
+    <!-- <file-deal v-model="isUpLoadShow" :applyId="applyId" :upLoadData="upLoadData" @change="uploadEditHandle" @showBigImg="showBigImg" /> -->
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl">
     </el-dialog> 
@@ -92,7 +92,7 @@ import SignDeal from '@/components/work/SignDeal'
 import RetLoanDeal from '@/components/work/RetLoanDeal'
 import AbandonFollow from '@/components/work/AbandonFollow'
 import BackOrderDeal from '@/components/work/BackOrderDeal'
-import FileDeal from '@/components/work/FileDeal'
+// import FileDeal from '@/components/work/FileDeal'
 // 业务处理组件
 export default {
   name: 'order-deal',
@@ -575,8 +575,8 @@ export default {
     SignDeal,
     RetLoanDeal,
     AbandonFollow,
-    BackOrderDeal,
-    FileDeal
+    BackOrderDeal
+    // FileDeal
   }
 }
 </script>
