@@ -83,10 +83,10 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="门店标识"
+        label="门店成员自动分单"
         min-width="150">
         <template slot-scope="scope">
-          <span>{{scope.row.orgFlag === 1 ? '对外门店' : '对内门店'}}</span>  
+          <span>{{scope.row.orgFlag === 1 ? '是' : '否'}}</span>  
         </template>
       </el-table-column>
       <el-table-column

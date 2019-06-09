@@ -107,10 +107,26 @@
           v-model="form.orgFlag"
           clearable
           filterable
-          placeholder="门店标识">
-          <el-option label="对内门店" :value="0"></el-option>
-          <el-option label="对外门店" :value="1"></el-option>
+          placeholder="门店成员自动分单">
+          <el-option label="是" :value="0"></el-option>
+          <el-option label="否" :value="1"></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item
+        label="API数据">
+        <el-input v-model.number="dataCost.APICost"></el-input>
+      </el-form-item>
+      <el-form-item
+        label="流量数据">
+        <el-input v-model.number="dataCost.flowCost"></el-input>
+      </el-form-item>
+      <el-form-item
+        label="历史数据">
+        <el-input v-model.number="dataCost.historyCost"></el-input>
+      </el-form-item>
+      <el-form-item
+        label="其他数据">
+        <el-input v-model.number="dataCost.otherCost"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -133,6 +149,12 @@ export default {
       titleText: '新增门店',
       provinceList: JSON.parse(this.$localStorage('cityList')) || [],
       cityList: [],
+      dataCost: {
+        APICost: 0,
+        flowCost: 0,
+        historyCost: 0,
+        otherCost: 0
+      },
       form: {
         orgId: '',
         orgName: '',
@@ -145,7 +167,8 @@ export default {
         orgType: '',
         isNet: '',
         isCount: '',
-        orgFlag: ''
+        orgFlag: '',
+        dataCost: ''
       }
     }
   },
@@ -169,15 +192,48 @@ export default {
         address: obj['address'] || '',
         managerName: obj['managerName'] || '',
         managerTel: obj['managerTel'] || '',
-        orgType: obj['orgType'] || '',
-        isNet: obj['isNet'] || '',
-        isCount: obj['isCount'] || '',
-        orgFlag: obj['orgFlag'] || ''
+        orgType: obj['orgType'] || 0,
+        isNet: obj['isNet'] || 0,
+        isCount: obj['isCount'] || 0,
+        orgFlag: obj['orgFlag'] || 0,
+        dataCost: obj['dataCost'] || ''
+      }
+      if (this.form.dataCost) {
+        let dataCostTmp = this.form.dataCost
+        if (typeof (dataCostTmp) === 'string') {
+          dataCostTmp = JSON.parse(dataCostTmp)
+        }
+        Object.keys(this.dataCost).forEach(key => {
+          this.dataCost[key] = dataCostTmp[key] || 0
+        })
       }
       this.changeProvince()
     }
   },
   methods: {
+    clearData () {
+      this.dataCost = {
+        APICost: 0,
+        flowCost: 0,
+        historyCost: 0,
+        otherCost: 0
+      }
+      this.form = {
+        orgId: '',
+        orgName: '',
+        orgNo: '',
+        province: '',
+        cityName: '',
+        address: '',
+        managerName: '',
+        managerTel: '',
+        orgType: '',
+        isNet: '',
+        isCount: '',
+        orgFlag: '',
+        dataCost: ''
+      }
+    },
     changeProvince () {
       this.provinceList.forEach(e => {
         if (this.form.province && this.form.province === e.provinceName) {
@@ -186,12 +242,23 @@ export default {
       })
     },
     close () {
+      this.clearData()
       this.$emit('close')
     },
     // 确定
     confirm () {
       this.$refs['form'].validate(valid => {
         if (valid) {
+          let keys = Object.keys(this.dataCost)
+          for (let index = 0; index < keys.length; index++) {
+            const key = keys[index]
+            console.log(key)
+            if (!Number.isInteger(this.dataCost[key])) {
+              this.$msg('请填写完整数据成本', 'error')
+              return
+            }
+          }
+          this.form.dataCost = JSON.stringify(this.dataCost)
           if (this.isEdit) {
             this.$ajax({
               url: '/store/account/config/orgCfg/update',
