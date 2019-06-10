@@ -75,7 +75,6 @@
         </el-form-item>
          <el-button :loading="loading" @click="searchHandle">查询</el-button>
          <el-button  class="kf-btn" @click="addUser()">增加用户</el-button>
-         <el-button  class="kf-btn" @click="addUser()">离职处理</el-button>
       </el-form>
     </div>
     <!-- table表格数据 -->
