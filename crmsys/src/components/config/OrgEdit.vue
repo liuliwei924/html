@@ -1,6 +1,6 @@
 <template>
-  <el-dialog class="edit-dialog" :title="titleText" :visible.sync="visible" :show-close="false" :close-on-click-modal="false">
-    <el-form :model="form" ref="form" label-width="150px">
+  <el-dialog class="edit-dialog double-dialog" :title="titleText" :visible.sync="visible" :show-close="false" :close-on-click-modal="false">
+    <el-form :model="form" ref="form" class="clearfix" label-width="150px">
       <el-form-item
         label="门店编号"
         prop="orgNo">
@@ -101,8 +101,32 @@
         </el-select>
       </el-form-item>
       <el-form-item
-        label="门店标识:"
-        :rules="{required: true, message: '门店标识不能为空'}">
+        label="API数据">
+        <el-input v-model.number="dataCost.APICost">
+          <template slot="append">元/1条</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item
+        label="流量数据">
+        <el-input v-model.number="dataCost.flowCost">
+          <template slot="append">元/1条</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item
+        label="历史数据">
+        <el-input v-model.number="dataCost.historyCost">
+          <template slot="append">元/1条</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item
+        label="其他数据">
+        <el-input v-model.number="dataCost.otherCost">
+          <template slot="append">元/1条</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item
+        label="门店成员自动分单:"
+        :rules="{required: true, message: '门店成员自动分单不能为空'}">
         <el-select
           v-model="form.orgFlag"
           clearable
@@ -111,22 +135,6 @@
           <el-option label="是" :value="0"></el-option>
           <el-option label="否" :value="1"></el-option>
         </el-select>
-      </el-form-item>
-      <el-form-item
-        label="API数据">
-        <el-input v-model.number="dataCost.APICost"></el-input>
-      </el-form-item>
-      <el-form-item
-        label="流量数据">
-        <el-input v-model.number="dataCost.flowCost"></el-input>
-      </el-form-item>
-      <el-form-item
-        label="历史数据">
-        <el-input v-model.number="dataCost.historyCost"></el-input>
-      </el-form-item>
-      <el-form-item
-        label="其他数据">
-        <el-input v-model.number="dataCost.otherCost"></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer">

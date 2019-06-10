@@ -3,7 +3,7 @@
     <div class="common-wrap">
       <div class="user-main-table clearfix">
         <div class="main-table-itme right-border fl">
-          <div class="table-item-title">今日概况</div>
+          <div class="table-item-title">今日概况 (门店可用余额：{{orgBalanceAmt}} 元)</div>
           <div class="table-wrap">
             <table border="1" cellspacing="0" class="table-info-wrap">
               <tr>
@@ -364,6 +364,7 @@ export default {
         0: '关闭分单'
       },
       nCurrentPage: 1,
+      orgBalanceAmt: '',
       fCurrentPage: 1,
       nTotalRecord: 1,
       fTotalRecord: 1,
@@ -405,6 +406,7 @@ export default {
       this.$ajax({
         url: '/store/account/user/info/queryToDayCase',
         success: data => {
+          this.orgBalanceAmt = data.attr.orgBalanceAmt || 0
           let ToDayCase = data.attr.ToDayWork || {}
           this.toDayCase = {
             receiveCount: ToDayCase['receiveCount'] || 0,

@@ -46,6 +46,9 @@
     <el-form-item label="渠道商户号" prop="merchId">
       <el-input v-model="form.merchId" :maxlength="20"></el-input>
     </el-form-item>
+    <el-form-item label="渠道别名" prop="channelNick">
+      <el-input v-model="form.channelNick" :maxlength="20"></el-input>
+    </el-form-item>
     <el-form-item label="分单等级" prop="allotGrade">
       <el-select v-model="form.allotGrade" placeholder="请选择分单等级">
         <el-option
@@ -90,6 +93,7 @@ export default{
         type: '',
         launchPlace: '',
         flowType: '',
+        channelNick: '',
         merchId: '',
         teamNo: '',
         allotGrade: '',
@@ -122,6 +126,7 @@ export default{
           merchId: this.form.merchId || '',
           teamNo: this.form.teamNo || '',
           allotGrade: this.form.allotGrade || '',
+          channelNick: this.form.channelNick || '',
           isCost: this.form.isCost || ''
         }
         this.$ajax({

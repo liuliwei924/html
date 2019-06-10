@@ -49,6 +49,11 @@
         min-width="150">
       </el-table-column>
       <el-table-column
+        prop="balanceAmt"
+        label="余额"
+        min-width="150">
+      </el-table-column>
+      <el-table-column
         prop="amBeginWorkTime"
         label="上午开始工作时间"
         min-width="150">
@@ -110,6 +115,7 @@
           <el-button type="text" size="small" @click="editHandle(scope.row)">编辑</el-button>
           <el-button type="text" class="table__danger" size="small" @click="deleteHandle(scope.row.recordId)">删除</el-button>
           <el-button type="text" class="table__danger" size="small" @click="orgCostHandle(scope.row.orgId)">成本维护</el-button>
+          <el-button type="text" size="small" @click="rechargeHandle(scope.row)">充值</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -123,10 +129,12 @@
     </el-pagination>
     <workTime-add v-model="addShow" @change="addChange" :cityNameList="cityNameList" :userOrgs="userOrgs"/>
     <workTime-edit v-model="editShow" :workTimeData="workTimeData" @change="editChange" :cityNameList="cityNameList" :userOrgs="userOrgs"/>
+    <recharge-amt :isShow="showRecharge" :curOrgId="curOrgId" @close="closeRecharge"/>
   </div>
 </template>
 
 <script>
+import RechargeAmt from '@/components/config/RechargeAmt'
 import WorkTimeAdd from '@/components/config/WorkTimeAdd'
 import WorkTimeEdit from '@/components/config/WorkTimeEdit'
 export default {
@@ -139,6 +147,8 @@ export default {
       tableData: [],
       totalRecord: 1,
       workTimeData: {},
+      curOrgId: -1,
+      showRecharge: false,
       addShow: false,
       editShow: false,
       userOrgs, // 门店数据
@@ -196,6 +206,10 @@ export default {
     editHandle (row) {
       this.workTimeData = row
       this.editShow = true
+    },
+    rechargeHandle (row) {
+      this.curOrgId = row.orgId
+      this.showRecharge = true
     },
     // 编辑弹窗监听
     editChange (val) {
@@ -270,6 +284,11 @@ export default {
       this.searchForm.currentPage = page
       this.searchHandle()
     },
+    closeRecharge () {
+      this.searchHandle()
+      this.curOrgId = -1
+      this.showRecharge = false
+    },
     // 获取网销城市
     getCityName () {
       this.$ajax({
@@ -282,7 +301,8 @@ export default {
   },
   components: {
     WorkTimeAdd,
-    WorkTimeEdit
+    WorkTimeEdit,
+    RechargeAmt
   }
 }
 </script>

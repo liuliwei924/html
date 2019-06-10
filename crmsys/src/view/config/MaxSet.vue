@@ -153,6 +153,7 @@ export default {
       rows: [
         {label: '代号', prop: 'channelCode', minWidth: 110},
         {label: '渠道名称', prop: 'channelName', minWidth: 110},
+        {label: '渠道别名', prop: 'channelNick', minWidth: 110},
         {label: '团队代号', prop: 'teamNo', minWidth: 110},
         {label: '团队名称', prop: 'teamName', minWidth: 110},
         {label: '渠道类型', prop: 'type', minWidth: 120, tags: this.typeFlag, type: 'tag1'},
@@ -207,6 +208,7 @@ export default {
         channelName: f.channelName,
         type: f.type + '',
         launchPlace: f.launchPlace + '',
+        channelNick: f.channelNick,
         flowType: f.flowType + '',
         merchId: f.merchId,
         teamNo: f.teamNo,

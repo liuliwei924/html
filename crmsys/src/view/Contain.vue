@@ -3,7 +3,7 @@
     <div class="common-wrap">
       <div class="user-main-table clearfix">
         <div class="main-table-itme right-border fl">
-          <div class="table-item-title">今日概况</div>
+          <div class="table-item-title">今日概况 <span style="color:red;">(门店可用余额：{{orgBalanceAmt}} 元)</span></div>
           <div class="table-wrap">
             <span class="content--box__txt">更新时间：{{todayQueryTime}}</span>
             <table border="1" cellspacing="0" class="table-info-wrap">
@@ -279,6 +279,7 @@ export default {
         retAmount: 0,
         sucRetAmount: 0
       },
+      orgBalanceAmt: '',
       monthWork: {
         receiveCount: 0,
         newApplyCount: 0,
@@ -350,6 +351,7 @@ export default {
         url: '/store/account/user/info/queryToDayCase',
         success: data => {
           let ToDayCase = data.attr.ToDayWork || {}
+          this.orgBalanceAmt = data.attr.orgBalanceAmt || 0
           this.todayQueryTime = data.attr.queryTime
           this.toDayCase = {
             receiveCount: ToDayCase['receiveCount'] || 0,
