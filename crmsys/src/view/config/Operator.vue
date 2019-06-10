@@ -75,6 +75,7 @@
         </el-form-item>
          <el-button :loading="loading" @click="searchHandle">查询</el-button>
          <el-button  class="kf-btn" @click="addUser()">增加用户</el-button>
+         <el-button  class="kf-btn" @click="addUser()">离职处理</el-button>
       </el-form>
     </div>
     <!-- table表格数据 -->
@@ -144,7 +145,7 @@
 	      <template slot-scope="scope">
           <el-button type="text" size="small" @click="editHandle(scope.row)" v-if="userType === '1'">编辑</el-button>
           <el-button type="text" size="small" @click="editInfo(scope.row)">编辑信息</el-button>
-          <el-button type="text" size="small" @click="editWeixin(scope.row.customerId, scope.row.telephone)" v-if="userType === '1'">微信变更</el-button>
+          <el-button type="text" size="small" @click="invalidHandle(scope.row.customerId)" v-if="userType === '1'">用户失效</el-button>
           <el-button type="text" size="small" @click="resetPwd" v-if="userType === '1'">重置密码</el-button>
 	      </template>
 	    </el-table-column>
@@ -383,6 +384,23 @@ export default {
           this.tableData = data.rows || []
           this.totalRecord = data.page.totalRecords
         }
+      })
+    },
+    invalidHandle (customerId) {
+      this.$confirm('此操作将该用户设置为失效, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$ajax({
+          url: '/store/account/config/operator/userInvalid ',
+          data: {customerId},
+          success: data => {
+            this.search(this.formCurrentPage)
+            this.$message({message: '操作成功', type: 'success'})
+          }
+        })
+      }).catch(() => {
       })
     },
     // 改变门店的状态
