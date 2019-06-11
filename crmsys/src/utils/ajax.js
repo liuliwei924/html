@@ -7,7 +7,7 @@ function ajax (Vue, axios) {
 
   axios.defaults.timeout = 20000
 
-  Vue.prototype.$baseURL = axios.defaults.baseURL = (process.env.NODE_ENV === 'production') ? '/' : 'http://120.78.68.90/'
+  Vue.prototype.$baseURL = axios.defaults.baseURL = (process.env.NODE_ENV === 'production') ? '/' : 'http://127.0.0.1/'
 
   window.$axios = axios
   // 序列化对象

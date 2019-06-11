@@ -3,7 +3,7 @@
     <div class="common-wrap">
       <div class="user-main-table clearfix">
         <div class="main-table-itme right-border fl">
-          <div class="table-item-title">今日概况 <span style="color:red;">(门店可用余额：{{orgBalanceAmt}} 元)</span></div>
+          <div class="table-item-title">今日概况 <span style="color:red;" v-if="userType === 6">(门店可用余额：{{orgBalanceAmt}} 元)</span></div>
           <div class="table-wrap">
             <span class="content--box__txt">更新时间：{{todayQueryTime}}</span>
             <table border="1" cellspacing="0" class="table-info-wrap">
@@ -234,6 +234,7 @@ export default {
   name: 'Contain',
   data () {
     let userRole = this.$localStorage('userRole') === '1'
+    let userType = this.$localStorage('userRole') || 0
     return {
       addShow: false,
       dealShow: false,
@@ -246,6 +247,7 @@ export default {
         isOtOrder: 1 // 分单状态
       },
       userRole,
+      userType,
       todayQueryTime: '', // 今日统计查询时间
       thisWeekQueryTime: '', // 本周统计查询时间
       monthQueryTime: '', // 本月统计查询时间

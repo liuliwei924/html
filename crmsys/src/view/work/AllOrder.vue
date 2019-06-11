@@ -389,8 +389,7 @@
       <el-table-column
         prop="channelText"
         label="渠道来源"
-        min-width="150"
-        v-if="isExport">
+        min-width="150">
       </el-table-column>
       <el-table-column
         prop="channelTypeText"

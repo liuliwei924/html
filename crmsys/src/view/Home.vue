@@ -103,7 +103,7 @@
         <el-button type="warning" @click="switchBusy">忙碌中</el-button>
       </div>
     </div>
-    <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog"/>
+    <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :isMy="true" :customerId="-1"/>
   </div>
 </template>
 

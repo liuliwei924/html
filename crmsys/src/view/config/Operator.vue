@@ -145,7 +145,7 @@
           <el-button type="text" size="small" @click="editHandle(scope.row)" v-if="userType === '1'">编辑</el-button>
           <el-button type="text" size="small" @click="editInfo(scope.row)">编辑信息</el-button>
           <el-button type="text" size="small" @click="invalidHandle(scope.row.customerId)" v-if="userType === '1'">用户失效</el-button>
-          <el-button type="text" size="small" @click="resetPwd" v-if="userType === '1'">重置密码</el-button>
+          <el-button type="text" size="small" @click="resetPwd(scope.row.customerId)" v-if="userType === '1'">重置密码</el-button>
 	      </template>
 	    </el-table-column>
     </el-table>
@@ -175,10 +175,10 @@
       :gradeCode="gradeCode"
       :isAllotOrder="isAllotOrder"
       @change="infoEditHandle" />
-      <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" />
+      <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :isMy="false" :customerId="curCustomerId"/>
       <!-- 微信变更弹窗 -->
       <weixin-edit v-model="isWexinShow" :customerId="customerId" :oldTel="oldTel" @change="weixinEditHandle" />
-      <el-dialog class="edit-dialog" title="增加用户" v-model="showAdduser">
+      <el-dialog class="edit-dialog" title="增加用户" v-if="userType === 1" v-model="showAdduser">
       <el-form ref="form2" :model="adduserForm" label-width="150px">
         <el-form-item label="手机号">
           <el-input v-model="adduserForm.telephone" :maxlength="11"></el-input>
@@ -243,6 +243,7 @@ export default {
       isInfoShow: false, // 编辑信息弹窗是否显示
       isWexinShow: false, // 微信弹窗是否显示
       showAdduser: false,
+      curCustomerId: -1,
       isLoading: false,
       editData: {},
       roleList: [], // 权限角色列表
@@ -279,11 +280,13 @@ export default {
   methods: {
     closePwdDialog (str) {
       this.isShowPwd = false
+      this.curCustomerId = -1
       if (str) {
         this.searchHandle()
       }
     },
-    resetPwd () {
+    resetPwd (customerId) {
+      this.curCustomerId = customerId
       this.isShowPwd = true
     },
     getGrades () {
