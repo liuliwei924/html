@@ -181,7 +181,7 @@ export default {
         }
       },
       startRecordDate: new Date(dateNow),
-      endRecordDate: new Date(),
+      endRecordDate: new Date(dateNow2),
       formTotalRecords: 0,
       formCurrentPage: 1,
       formTotalRecords3: 0,
@@ -401,6 +401,7 @@ export default {
       this.endRecordMonth = val || ''
     },
     endTimeHandle (end) {
+      console.log(end)
       this.searchForm.endRecordDate = end || ''
     }
   }
