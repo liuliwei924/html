@@ -74,7 +74,7 @@
           </el-select>
         </el-form-item>
          <el-button :loading="loading" @click="searchHandle">查询</el-button>
-         <el-button  class="kf-btn" @click="addUser()">增加用户</el-button>
+         <el-button  class="kf-btn" v-if="userType === '1'" @click="addUser()">增加用户</el-button>
       </el-form>
     </div>
     <!-- table表格数据 -->
@@ -178,7 +178,7 @@
       <edit-pwd :isShowPwd="isShowPwd" @close="closePwdDialog" :isMy="false" :customerId="curCustomerId"/>
       <!-- 微信变更弹窗 -->
       <weixin-edit v-model="isWexinShow" :customerId="customerId" :oldTel="oldTel" @change="weixinEditHandle" />
-      <el-dialog class="edit-dialog" title="增加用户" v-if="userType === 1" v-model="showAdduser">
+      <el-dialog class="edit-dialog" title="增加用户" v-model="showAdduser">
       <el-form ref="form2" :model="adduserForm" label-width="150px">
         <el-form-item label="手机号">
           <el-input v-model="adduserForm.telephone" :maxlength="11"></el-input>
@@ -317,6 +317,7 @@ export default {
         },
         fail: data => {
           this.$msg(data.message)
+          this.showAdduser = false
           this.isLoading = false
         }
       })
