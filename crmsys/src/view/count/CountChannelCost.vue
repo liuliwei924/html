@@ -114,11 +114,11 @@ export default {
   name: 'count-org-cost',
   data () {
     let {curMonth, lastMonth} = this.$monthDate()
-    let {firstDay, yesterday} = this.$searchDate()
+    let {firstDay, today} = this.$searchDate()
     let startMonth = lastMonth
     let endMonth = curMonth
     let dateNow = firstDay
-    let dateNow2 = yesterday
+    let dateNow2 = today
     let userOrgs = JSON.parse(this.$localStorage('userOrgs')) || []
     return {
       routeParams: '',
