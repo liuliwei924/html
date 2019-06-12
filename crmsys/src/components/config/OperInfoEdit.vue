@@ -210,15 +210,15 @@ export default {
         isAllotOrder: obj['isAllotOrder'] || 0
       }
       this.isAll = isAll
-    },
-    // 编辑中门店处理值变化
-    'form.orgId' (val, old) {
-      // 门店管理添加默认门店
-      let userOrgs = new Set(this.form.userOrgs)
-      userOrgs.delete(old)
-      userOrgs.add(val)
-      this.form.userOrgs = Array.from(userOrgs)
     }
+    // 编辑中门店处理值变化
+    // 'form.orgId' (val, old) {
+    //   // 门店管理添加默认门店
+    //   let userOrgs = new Set(this.form.userOrgs)
+    //   userOrgs.delete(old)
+    //   userOrgs.add(val)
+    //   this.form.userOrgs = Array.from(userOrgs)
+    // }
   },
   methods: {
     // 弹窗关闭
