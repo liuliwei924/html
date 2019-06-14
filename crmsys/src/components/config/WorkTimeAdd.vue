@@ -115,7 +115,7 @@
         <el-time-select
           v-model="form.endAllotTime"
           :picker-options="{
-            start: '19:00',
+            start: '18:00',
             step: '00:05',
             end: '22:00'
           }"

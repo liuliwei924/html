@@ -29,7 +29,7 @@
           filterable
           placeholder="请选择">
           <el-option
-            v-for="item,index in roleList"
+            v-for="(item,index) in roleList"
             :label="item.roleName"
             :value="item.roleId"
             :key="index">
@@ -45,7 +45,7 @@
           filterable
           placeholder="请选择">
           <el-option
-            v-for="val,key,index in roleType"
+            v-for="(val,key,index) in roleType"
             :label="val"
             :value="Number(key)"
             :key="index">
@@ -64,6 +64,11 @@
         v-if="roleType !== 1">
         <el-input v-model="form.teamName"></el-input>
       </el-form-item>
+      <el-form-item
+        label="来源"
+        prop="sourceType">
+        <el-input v-model="form.sourceType"></el-input>
+      </el-form-item>
       <el-form-item label="门店">
         <el-select
           v-model="form.orgId"
@@ -71,7 +76,7 @@
           clearable
           placeholder="请选择">
           <el-option
-            v-for="item,index in userOrgs"
+            v-for="(item,index) in userOrgs"
             :label="item.orgNo + '-' + item.orgName"
             :value="item.orgId"
             :key="index">
@@ -87,7 +92,7 @@
           placeholder="请选择"
           v-if="!isAll">
           <el-option
-            v-for="item,index in userOrgs"
+            v-for="(item,index) in userOrgs"
             :label="item.orgNo + '-' + item.orgName"
             :value="item.orgId"
             :key="index">
@@ -101,7 +106,7 @@
           :rules="{type: 'number', required: true, message: '必填项', trigger: 'blur'}">
           <el-select v-model.number="form.gradeCode" placeholder="请选择">
             <el-option
-              v-for="val,key,index in gradeCode"
+              v-for="(val,key,index) in gradeCode"
               :label="val"
               :value="Number(key)"
               :key="index">
@@ -114,7 +119,7 @@
           :rules="{type: 'number', required: true, message: '必填项', trigger: 'blur'}">
           <el-select v-model.number="form.isAllotOrder" placeholder="请选择">
             <el-option
-              v-for="val,key,index in isAllotOrder"
+              v-for="(val,key,index) in isAllotOrder"
               :disabled="index === 4 && !userRole"
               :label="val"
               :value="Number(key)"
@@ -156,6 +161,7 @@ export default {
         userName: '',
         telephone: '',
         roleId: '',
+        sourceType: '',
         totalAbility: '',
         groupName: '',
         teamName: '',
@@ -199,6 +205,7 @@ export default {
         totalAbility: obj['totalAbility'] || 0,
         groupName: obj['groupName'] || '',
         teamName: obj['teamName'] || '',
+        sourceType: obj['sourceType'] || '',
         orgId: obj['orgId'] || '',
         roleType: obj['roleType'] || '',
         userOrgs: (isAll || !obj['userOrgs']) ? [] : obj['userOrgs'].split(',').map(item => Number(item)),
