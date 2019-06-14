@@ -115,9 +115,9 @@ export default {
       calcTime: 60,
       codeText: '获取验证码',
       timer: null,
-      markImg: 'https://kefu.xxjr.com/store/sysAction/downloadXxyunApp',
+      markImg: '',
       markShow: false,
-      markACRImg: 'https://kefu.xxjr.com/store/sysAction/downloadACRApp',
+      markACRImg: '',
       markACRShow: false
     }
   },
