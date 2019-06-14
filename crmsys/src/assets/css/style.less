@@ -182,6 +182,30 @@ html, body {
         background: #808080;
       }
     }
+    .login-content__tab_new {
+      width: 80px;
+      margin-left: 50px;
+      margin-right: 50px;
+      line-height: 18px;
+      font-size: 16px;
+      color: #808080;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      &.active {
+        color: #6ba7d2;
+      }
+      &:first-child:after {
+        display: block;
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -50px;
+        width: 1px;
+        height: 18px;
+        background: #808080;
+      }
+    }
     .login-content__wx {
       text-align: center;
     }
