@@ -7,27 +7,45 @@
     <!-- 登录框 -->
     <div class="login-block">
       <div class="login-logo"></div>
-      <div class="login-wrapper">
-        <div class="login-content">
-         <!--  <div class="login-content__header clearfix">
-            <div class="login-content__tab fl" :class="{active: tab === 2}" @click.stop="switchTab(2)">扫码登录</div>
-            <div class="login-content__tab fl" :class="{active: tab === 1}" @click.stop="switchTab(1)">微信登录</div>
-            <div class="login-content__tab fl" :class="{active: tab === 3}" @click.stop="switchTab(3)">手机登录</div>
-          </div>  -->
+      <div :class="wrapperClass">
+        <div :class="contentClass">
+         <div class="login-content__header clearfix" style="width: 360px;">
+            <!--  <div class="login-content__tab fl" :class="{active: tab === 2}" @click.stop="switchTab(2)">扫码登录</div>-->
+            <div class="login-content__tab fl" :class="{active: tab === 1}" @click.stop="switchTab(1)">密码登录</div>
+            <div class="login-content__tab_new fl" :class="{active: tab === 3}" @click.stop="switchTab(3)">验证码登录</div>
+          </div>
           <div class="login-content__body">
             <!-- 微信扫码登录 -->
             <div id="wxLogin" class="login-content__wx" v-show="tab === 1"></div>
             <!-- 手机登录 -->
-            <el-form :model="codeForm" ref="codeForm" class="login-content__panel" v-show="tab == 2">
+             <!-- <el-form :model="codeForm" ref="codeForm" class="login-content__panel" v-show="tab == 2">
               <div class="app-scan">
                 <img :src="appQrcode" alt="">
               </div>
-              <!-- <div class="two-app-btn">
+             <div class="two-app-btn">
                 <el-button class="download-btn" @click.prevent="download">下载小小云APP</el-button>
                 <el-button class="download-btn" @click.prevent="downloadACR">下载ACR</el-button>
-              </div> -->
-            </el-form>
+              </div
+            </el-form>> -->
             <!-- 手机登录 -->
+            <el-form :model="pwdForm" ref="pwdForm" class="login-content__panel" v-show="tab == 1">
+              <div class="login-content__group">
+                <i class="login-icon__user fl"></i>
+                <el-form-item class="fl" prop="telephone" :rules="{validator: checkPhone, trigger: 'blur'}">
+                  <el-input v-model="pwdForm.telephone" :maxlength="11" placeholder="请输入您的手机号码"></el-input>
+                </el-form-item>
+              </div>
+              <div class="login-content__group">
+                <i class="login-icon__code fl"></i>
+                <el-form-item class="fl" prop="password" :rules="{required: true, message: '请输入您的密码', trigger: 'blur'}">
+                  <el-input :type="pwdType" placeholder="请输入您的密码" v-model="pwdForm.password">
+                  </el-input>
+                </el-form-item>
+                <i class="login-icon__pass fl" v-if="isPass" style="margin-left: 40px;" @click="showPwd()"></i>
+              </div>
+              <el-button native-type="submit" class="login-btn" @click.prevent="pwdLogin">登&nbsp;录</el-button>
+            </el-form>
+            <!-- 验证码 -->
             <el-form :model="codeForm" ref="codeForm" class="login-content__panel" v-show="tab == 3">
               <div class="login-content__group">
                 <i class="login-icon__user fl"></i>
@@ -35,13 +53,24 @@
                   <el-input v-model="codeForm.telephone" :maxlength="11" placeholder="请输入您的手机号码"></el-input>
                 </el-form-item>
               </div>
-              <div class="login-content__group">
+
+              <div class="login-content__group" v-if="isShow">
                 <i class="login-icon__code fl"></i>
-                <el-form-item class="fl" prop="password" :rules="{required: true, message: '请输入您的密码', trigger: 'blur'}">
-                  <el-input :type="pwdType" placeholder="请输入您的密码" v-model="codeForm.password">
+                <el-form-item class="fl">
+                  <el-input placeholder="请输入图形验证码" v-model="smsImgCode">
                   </el-input>
                 </el-form-item>
-                <i class="login-icon__pass fl" v-if="isPass" style="margin-left: 40px;" @click="showPwd()"></i>
+                <img :src="imgUrl" @click="freshImgUrl"/>
+              </div>
+
+              <div class="login-content__group">
+                <i class="login-icon__code fl"></i>
+                <el-form-item class="fl" prop="randomNo" :rules="{required: true, message: '请输入您的验证码', trigger: 'blur'}">
+                  <el-input  placeholder="请输入您的验证码" v-model="codeForm.randomNo">
+                  </el-input>
+                </el-form-item>
+                <span class="login-code" @click="confirm" v-if="isShow">{{calcTime === 60 ? '获取验证码' : calcTime+'s'}}</span>
+                <span class="login-code" @click="getCode" v-else>{{calcTime === 60 ? '获取验证码' : calcTime+'s'}}</span>
               </div>
               <el-button native-type="submit" class="login-btn" @click.prevent="codeLogin">登&nbsp;录</el-button>
             </el-form>
@@ -59,13 +88,24 @@ export default {
   name: 'login',
   data () {
     let dev = (process.env.NODE_ENV === 'production')
+    let imgCodeKey = ('crmpage' + Math.floor(Math.random() * (99999 - 10000 + 1) + 10000))
     return {
       pwdType: 'password',
       appQrcode: '',
-      tab: 3,
-      codeForm: {
+      imgCodeKey,
+      tab: 1,
+      active: 1,
+      imgUrl: (this.$baseURL + '/store/sysAction/getImgCode/' + imgCodeKey),
+      smsImgCode: '',
+      pwdForm: {
         telephone: '',
         password: ''
+      },
+      isShow: false,
+      oldTelephone: '',
+      codeForm: {
+        telephone: '',
+        randomNo: ''
       },
       // 校验手机格式
       checkPhone (rule, value, callback) {
@@ -82,8 +122,22 @@ export default {
     }
   },
   computed: {
+    wrapperClass () {
+      if (this.isShow && this.tab === 3) {
+        return 'login-wrapper wrapper'
+      } else {
+        return 'login-wrapper'
+      }
+    },
+    contentClass () {
+      if (this.isShow && this.tab === 3) {
+        return 'login-content content'
+      } else {
+        return 'login-content'
+      }
+    },
     isPass () {
-      if (this.codeForm.password && this.codeForm.password.length > 0) {
+      if (this.pwdForm.password && this.pwdForm.password.length > 0) {
         return true
       } else {
         this.pwdType = 'password'
@@ -95,6 +149,9 @@ export default {
     // 倒计时
     calcTime (val) {
       this.codeText = val === 60 ? '获取验证码' : `${val}s`
+    },
+    'codeForm.telephone' (val) {
+      this.isShow = false
     }
   },
   beforeCreate () {
@@ -230,6 +287,12 @@ export default {
         this.pwdType = 'password'
       }
     },
+    freshImgUrl () {
+      let imgCodeKey = ('crmpage' + Math.floor(Math.random() * (99999 - 10000 + 1) + 10000))
+      this.imgCodeKey = imgCodeKey
+      this.imgUrl = (this.$baseURL + '/store/sysAction/getImgCode/' + imgCodeKey)
+      console.log(this.imgUrl)
+    },
     // getSessionId () {
     //   let _this = this
     //   window.$axios.get('https://kefu.xxjr.com/store/sysAction/sessionIdDeal', {}).then(function (res) {
@@ -253,24 +316,97 @@ export default {
       // 校验手机号码
       this.$refs['codeForm'].validateField('telephone', err => {
         if (!err) {
-          this.timer = window.setInterval(() => {
-            if (this.calcTime === 60) {
-              this.$ajax({
-                url: '/store/smsAction/nologin/kjlogin',
-                data: {
-                  telephone: this.codeForm.telephone
-                },
-                success: data => {
-                  this.$message(data.message)
+          if (this.calcTime === 60) {
+            this.$ajax({
+              url: '/store/smsAction/nologin/kjlogin',
+              data: {
+                telephone: this.codeForm.telephone
+              },
+              success: data => {
+                this.$message(data.message)
+                this.timer = window.setInterval(() => {
+                  if (--this.calcTime === 0) {
+                    window.clearInterval(this.timer)
+                    this.timer = null
+                    this.calcTime = 60
+                  }
+                }, 1000)
+              },
+              fail: data => {
+                console.log(data)
+                if (data.errorCode === '001') {
+                  this.isShow = true
+                  this.freshImgUrl()
+                  this.$message({showClose: true, message: '验证码限制到上限，请输入图像验证码再获取', type: 'error'})
+                } else {
+                  this.timer = window.setInterval(() => {
+                    if (--this.calcTime === 0) {
+                      window.clearInterval(this.timer)
+                      this.timer = null
+                      this.calcTime = 60
+                    }
+                  }, 1000)
+                  this.$msg(data.message, 'error')
                 }
-              })
+              }
+            })
+          }
+        }
+      })
+    },
+    confirm () {
+      if (this.calcTime === 60) {
+        if (!this.smsImgCode) {
+          this.$message({showClose: true, message: '请输入图像验证码', type: 'error'})
+          return
+        }
+        if (!this.codeForm.telephone) {
+          this.$message({showClose: true, message: '请输入手机号', type: 'error'})
+          return
+        }
+        this.$ajax({
+          url: '/store/smsAction/nologin/kjlogin',
+          data: {
+            telephone: this.codeForm.telephone,
+            smsImgCode: this.smsImgCode,
+            imgCodeKey: this.imgCodeKey
+          },
+          success: data => {
+            this.$message(data.message)
+            this.timer = window.setInterval(() => {
+              if (--this.calcTime === 0) {
+                window.clearInterval(this.timer)
+                this.timer = null
+                this.calcTime = 60
+                this.isShow = false
+              }
+            }, 1000)
+          },
+          fail: data => {
+            this.$message({showClose: true, message: data.message, type: 'error'})
+            this.freshImgUrl()
+          }
+        })
+      }
+    },
+    // 验证码登录
+    pwdLogin () {
+      this.$refs['pwdForm'].validate(valid => {
+        if (valid) {
+          this.$ajax({
+            url: '/store/user/login',
+            data: this.pwdForm,
+            noToken: true,
+            success: data => {
+              let row = data.rows[0] || {}
+              // 存储用户名和用户角色
+              this.$localStorage('userName', row.userName)
+              this.$localStorage('userRole', row.userRole)
+              this.$localStorage('allOrgs', row.allOrgs)
+              this.$localStorage('userOrgId', row.userOrgId)
+              this.$router.push('/')
             }
-            if (--this.calcTime === 0) {
-              window.clearInterval(this.timer)
-              this.timer = null
-              this.calcTime = 60
-            }
-          }, 1000)
+          })
         }
       })
     },
@@ -279,11 +415,12 @@ export default {
       this.$refs['codeForm'].validate(valid => {
         if (valid) {
           this.$ajax({
-            url: '/store/user/login',
+            url: '/store/user/kjLogin',
             data: this.codeForm,
             noToken: true,
             success: data => {
               let row = data.rows[0] || {}
+              this.isShow = false
               // 存储用户名和用户角色
               this.$localStorage('userName', row.userName)
               this.$localStorage('userRole', row.userRole)
@@ -312,6 +449,67 @@ export default {
 </script>
 
 <style lang="less" scope>
+.wrapper {
+  height: 378px !important;
+}
+.content {
+  height: 345px !important;
+}
+.black-mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .popup-wrap {
+    width: 30rem;
+    height: 10rem;
+    background: #fff;
+    border-radius: .1rem;
+    padding: .5rem .3rem;
+    .title {
+      text-align: center;
+      padding-bottom: 1rem;
+      color: #4b94c7;
+      font-size: 1rem;
+    }
+    .text {
+      font-size: .26rem;
+      text-align: left;
+    }
+    .img {
+      width: 15rem;
+      height: 5rem;
+    }
+    .btn {
+      width: 4rem;
+      height: 3rem;
+      font-size: .26rem;
+      margin: -0.5rem auto 0;
+      margin-left: 25rem;
+      background: #4b94c7;
+      color: #fff;
+      border-radius: .1rem;
+    }
+  }
+}
+.login-content__panel .login-code {
+  display: inline-block;
+  width: 120px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  border-left: 1px solid #dcdcdc;
+  font-size: 16px;
+  color: #4b94c7;
+  cursor: pointer;
+}
 .show-pwd {
     position: absolute;
     right: 10px;
