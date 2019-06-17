@@ -109,7 +109,7 @@ export default {
       },
       // 校验手机格式
       checkPhone (rule, value, callback) {
-        /^1[345789]\d{9}$/.test(value) ? callback() : callback(new Error('手机号码格式不正确'))
+        /^1[3456789]\d{9}$/.test(value) ? callback() : callback(new Error('手机号码格式不正确'))
       },
       dev,
       calcTime: 60,
