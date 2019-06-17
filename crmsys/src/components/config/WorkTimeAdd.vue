@@ -132,6 +132,20 @@
         prop="monthMaxCost">
         <el-input v-model.number="form.monthMaxCost" type="number" min="0"></el-input>
       </el-form-item>
+      <el-form-item
+        label="历史数据最大量"
+        prop="hisMaxCount">
+        <el-input v-model="form.hisMaxCount">
+          <template slot="append">条</template>
+        </el-input>
+      </el-form-item>
+      <el-form-item
+        label="门店最大消费凉"
+        prop="realmaxCount">
+        <el-input v-model="form.realmaxCount" >
+          <template slot="append">条</template>
+        </el-input>
+      </el-form-item>
     </el-form>
     <div slot="footer">
       <el-button @click="close">取消</el-button>
@@ -161,6 +175,8 @@ export default {
         evesBeginWorkTime: '',
         evesEndWordTime: '',
         startAllotTime: '',
+        realmaxCount: '',
+        hisMaxCount: '',
         endAllotTime: '',
         orgMaxCount: '',
         monthMaxCost: ''
