@@ -109,6 +109,16 @@
         min-width="180">
       </el-table-column>
       <el-table-column
+        label="历史数据最大量"
+        min-width="180">
+        <template slot-scope="scope"><span>{{scope.row.hisMaxCount}}条</span></template>
+      </el-table-column>
+      <el-table-column
+        label="门店最大消费凉"
+        min-width="180">
+        <template slot-scope="scope"><span>{{scope.row.realmaxCount}}条</span></template>
+      </el-table-column>
+      <el-table-column
         label="操作"
         min-width="180">
         <template slot-scope="scope">
