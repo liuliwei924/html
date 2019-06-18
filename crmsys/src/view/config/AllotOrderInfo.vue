@@ -329,6 +329,7 @@ export default {
         orderBy: '',
         orderValue: ''
       },
+      userOrgs, // 门店数据
       leavelCustId: '',
       realName: '',
       loading: false,
@@ -419,15 +420,7 @@ export default {
         })
       }
     },
-    // 获取网销门店
-    getNetOrgList () {
-      this.$ajax({
-        url: '/store/account/user/comm/queryNetOrg',
-        success: data => {
-          this.netOrgList = data.attr['netOrgList']
-        }
-      })
-    },
+
     sortEvent (column) {
       if (column.prop === null) {
         if (this.searchForm.hasOwnProperty('orderBy')) { delete this.searchForm['orderBy'] }

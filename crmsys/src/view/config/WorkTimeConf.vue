@@ -98,25 +98,16 @@
         label="创建日期"
         min-width="180">
       </el-table-column>
-      <el-table-column
-        prop="orgMaxCount"
-        label="门店最大分单量"
-        min-width="180">
-      </el-table-column>
-      <el-table-column
-        prop="monthMaxCost"
-        label="月最大成本单量"
-        min-width="180">
-      </el-table-column>
+ 
       <el-table-column
         label="历史数据最大量"
         min-width="180">
         <template slot-scope="scope"><span>{{scope.row.hisMaxCount}}条</span></template>
       </el-table-column>
       <el-table-column
-        label="门店最大消费凉"
+        label="实时数据最大量"
         min-width="180">
-        <template slot-scope="scope"><span>{{scope.row.realmaxCount}}条</span></template>
+        <template slot-scope="scope"><span>{{scope.row.realMaxCount}}条</span></template>
       </el-table-column>
       <el-table-column
         label="操作"

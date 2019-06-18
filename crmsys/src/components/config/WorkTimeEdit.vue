@@ -122,16 +122,6 @@
         </el-time-select>
       </el-form-item>
       <el-form-item
-        label="门店最大分单量"
-        prop="orgMaxCount">
-        <el-input v-model="form.orgMaxCount"></el-input>
-      </el-form-item>
-      <el-form-item
-        label="月最大成本单量"
-        prop="monthMaxCost">
-        <el-input v-model.number="form.monthMaxCost" type="number" min="0"></el-input>
-      </el-form-item>
-      <el-form-item
         label="历史数据最大量"
         prop="hisMaxCount">
         <el-input v-model="form.hisMaxCount">
@@ -139,9 +129,9 @@
         </el-input>
       </el-form-item>
       <el-form-item
-        label="门店最大消费凉"
-        prop="realmaxCount">
-        <el-input v-model="form.realmaxCount" >
+        label="实时数据最大量"
+        prop="realMaxCount">
+        <el-input v-model="form.realMaxCount" >
           <template slot="append">条</template>
         </el-input>
       </el-form-item>
@@ -174,14 +164,12 @@ export default {
         amEndWordTime: '',
         pmBeginWorkTime: '',
         pmEndWordTime: '',
-        realmaxCount: '',
+        realMaxCount: '',
         hisMaxCount: '',
         evesBeginWorkTime: '',
         evesEndWordTime: '',
         startAllotTime: '',
-        endAllotTime: '',
-        orgMaxCount: '',
-        monthMaxCost: ''
+        endAllotTime: ''
       },
       custInfo: []
     }
@@ -208,8 +196,8 @@ export default {
         evesEndWordTime: obj['evesEndWordTime'] || '',
         startAllotTime: obj['startAllotTime'] || '',
         endAllotTime: obj['endAllotTime'] || '',
-        orgMaxCount: obj['orgMaxCount'] || '',
-        monthMaxCost: obj['monthMaxCost'] || ''
+        hisMaxCount: obj['hisMaxCount'] || '',
+        realMaxCount: obj['realMaxCount'] || ''
       }
     }
   },
