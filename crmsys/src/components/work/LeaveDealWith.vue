@@ -24,7 +24,7 @@
           @change="changeOrgHandle"
           placeholder="请选择门店">
           <el-option
-            v-for="item,index in netOrgList"
+            v-for="item,index in userOrgs"
             :label="item.orgNo + '-' + item.orgName"
             :value="item.orgId"
             :key="index">
@@ -77,7 +77,7 @@ export default {
   name: 'leave-dealWith',
   props: {
     value: Boolean,
-    netOrgList: Array,
+    userOrgs: Array,
     realName: String,
     leavelCustId: [Number, String]
   },

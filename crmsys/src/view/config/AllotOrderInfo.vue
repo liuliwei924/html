@@ -58,7 +58,7 @@
             @change="changeOrgHandle"
             placeholder="请选择门店">
             <el-option
-              v-for="item,index in netOrgList"
+              v-for="item,index in userOrgs"
               :label="item.orgNo + '-' + item.orgName"
               :value="item.orgId"
               :key="index">
@@ -291,7 +291,7 @@
     <!-- 模块组件 -->
       <leave-dealWith 
       v-model="isLeaveShow" 
-      :netOrgList="netOrgList"
+      :userOrgs="userOrgs"
       :leavelCustId="leavelCustId"
       :realName="realName"
       @change="leaveEditHandle" />
@@ -311,6 +311,7 @@ export default {
   data () {
     // 缓存查询条件
     let store = this.$getStore('allotOrderInfo')
+    let userOrgs = JSON.parse(this.$localStorage('userOrgs')) || []
     return {
       searchForm: {
         realName: store['realName'] || '',
@@ -324,6 +325,7 @@ export default {
         employeeNo: store['employeeNo'] || '',
         queryStatus: store['queryStatus'] || '',
         currentPage: store['currentPage'] || 1,
+        userOrgs, // 门店数据
         orderBy: '',
         orderValue: ''
       },
