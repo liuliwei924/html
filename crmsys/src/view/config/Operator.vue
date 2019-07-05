@@ -98,6 +98,11 @@
         min-width="120">
       </el-table-column>
       <el-table-column
+        prop="statusDesc"
+        label="用户状态"
+        min-width="120">
+      </el-table-column>
+      <el-table-column
         prop="orgNo"
         label="门店编号"
         min-width="110">
