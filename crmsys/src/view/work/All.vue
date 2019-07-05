@@ -28,11 +28,25 @@
           <el-form-item>
             <el-input v-model="searchForm.applyName" placeholder="输入贷款人姓名或手机号" class="kf-search-input"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-select v-model="searchForm.cityName" filterable clearable placeholder="请选择申请城市">
-              <el-option v-for="(city,index) in citys" :label="city" :value="city" :key="index"></el-option>
-            </el-select>
-          </el-form-item>
+          <el-form-item label="城市:">
+          <el-select
+            v-model="searchForm.cityName"
+            filterable
+            clearable
+            placeholder="请选择">
+            <el-option-group
+              v-for="group,gIndex in cityList"
+              :label="group.provinceName"
+              :key="gIndex">
+              <el-option
+                v-for="item,index in group.citys"
+                :label="item.cityName"
+                :value="item.cityName"
+                :key="index">
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </el-form-item>
           <el-form-item>
             <el-input v-model="searchForm.channelDetail" placeholder="输入渠道来源" class="kf-search-input"></el-input>
           </el-form-item>
@@ -368,7 +382,7 @@ export default {
       startTime: initForm['sTime'],
       endTime: initForm['eTime'] || d,
       endTimeOptions: {},
-      citys: [],
+      cityList: [],
       checkDesk: initForm['checkDesk'],
       deskOpts: deskOpt,
       tableData: [],
@@ -398,7 +412,7 @@ export default {
   },
   created () {
     // !Object.keys(this.$route.query).length ? this.searchHandle(1) : this.searchHandle(2)
-    this.citys = this.$localStorage('city').split(',')
+    this.cityList = JSON.parse(this.$localStorage('cityList')) || []
     // 获取权限
     let menuCode = this.$route.path.split('/')[2]
     let checkUrl = this.$localStorage('kfCheckMenus')

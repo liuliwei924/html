@@ -245,14 +245,13 @@ export default {
   },
   created () {
     // !Object.keys(this.$route.query).length ? this.searchHandle(1) : this.searchHandle(2)
-    this.citys = this.$localStorage('city').split(',')
+    this.citys = JSON.parse(this.$localStorage('cityList')) || []
     this.searchChannels()
   },
   methods: {
     searchChannels () {
       this.$ajax({
         url: '/store/user/code/queryAll',
-        data: this.searchForm,
         success: data => {
           this.channels = data.rows
         }
