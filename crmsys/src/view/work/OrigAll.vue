@@ -28,12 +28,25 @@
           <el-form-item>
             <el-input v-model="searchForm.applyName" placeholder="输入贷款人姓名或手机号" class="kf-search-input"></el-input>
           </el-form-item>
-          <el-form-item>
-            <el-select v-model="searchForm.cityName" filterable clearable placeholder="请选择申请城市">
-              <el-option v-for="(city,index) in citys" :label="city" :value="city" :key="index"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
+               <el-form-item>
+          <el-select
+            v-model="searchForm.cityName"
+            filterable
+            clearable
+            placeholder="请选择城市">
+            <el-option-group
+              v-for="group,gIndex in cityList"
+              :label="group.provinceName"
+              :key="gIndex">
+              <el-option
+                v-for="item,index in group.citys"
+                :label="item.cityName"
+                :value="item.cityName"
+                :key="index">
+              </el-option>
+            </el-option-group>
+          </el-select>
+        </el-form-item>
           <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择渠道代号">
             <el-option
               v-for="(item,index) in channels"
@@ -207,7 +220,7 @@ export default {
       startTime: date,
       endTime: d,
       channels: [],
-      citys: [],
+      cityList: [],
       endTimeOptions: '',
       tableData: [],
       totalRecord: 0,
@@ -245,7 +258,7 @@ export default {
   },
   created () {
     // !Object.keys(this.$route.query).length ? this.searchHandle(1) : this.searchHandle(2)
-    this.citys = JSON.parse(this.$localStorage('cityList')) || []
+    this.cityList = JSON.parse(this.$localStorage('cityList')) || []
     this.searchChannels()
   },
   methods: {

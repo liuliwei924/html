@@ -28,12 +28,12 @@
           <el-form-item>
             <el-input v-model="searchForm.applyName" placeholder="输入贷款人姓名或手机号" class="kf-search-input"></el-input>
           </el-form-item>
-          <el-form-item label="城市:">
+          <el-form-item>
           <el-select
             v-model="searchForm.cityName"
             filterable
             clearable
-            placeholder="请选择">
+            placeholder="请选择城市">
             <el-option-group
               v-for="group,gIndex in cityList"
               :label="group.provinceName"
