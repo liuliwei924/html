@@ -28,7 +28,7 @@
           <el-form-item>
             <el-input v-model="searchForm.applyName" placeholder="输入贷款人姓名或手机号" class="kf-search-input"></el-input>
           </el-form-item>
-               <el-form-item>
+        <el-form-item>
           <el-select
             v-model="searchForm.cityName"
             filterable
@@ -47,6 +47,7 @@
             </el-option-group>
           </el-select>
         </el-form-item>
+         <el-form-item>
           <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择渠道代号">
             <el-option
               v-for="(item,index) in channels"
