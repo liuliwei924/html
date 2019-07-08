@@ -47,9 +47,15 @@
             </el-option-group>
           </el-select>
         </el-form-item>
-          <el-form-item>
-            <el-input v-model="searchForm.channelDetail" placeholder="输入渠道来源" class="kf-search-input"></el-input>
-          </el-form-item>
+        <el-form-item>
+          <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择渠道代号">
+            <el-option
+              v-for="(item,index) in channels"
+              :label="item.channelCode"
+              :value="item.channelCode" :key="index">
+            </el-option>
+          </el-select>
+        </el-form-item>
           <el-form-item>
             <el-select v-model="searchForm.applyType" clearable placeholder="请选择单子类型">
               <el-option label="优质单" value="1"></el-option>
@@ -182,8 +188,8 @@
         </el-table-column>
         <el-table-column
           min-width="120"
-          prop="channelDetail"
-          label="来源">
+          prop="channelCode"
+          label="渠道">
         </el-table-column>
         <el-table-column
           min-width="150"
@@ -353,7 +359,7 @@ export default {
         endTime: initForm['endTime'] || endDateTime,
         applyName: initForm['applyName'],
         cityName: initForm['cityName'],
-        channelDetail: initForm['channelDetail'],
+        channelCode: initForm['channelCode'],
         applyType: initForm['applyType'] || '',
         status: initForm['status'],
         kfName: initForm['kfName'],
@@ -383,6 +389,7 @@ export default {
       endTime: initForm['eTime'] || d,
       endTimeOptions: {},
       cityList: [],
+      channels: [],
       checkDesk: initForm['checkDesk'],
       deskOpts: deskOpt,
       tableData: [],
@@ -419,12 +426,21 @@ export default {
     if (checkUrl.indexOf(menuCode) >= 0) {
       this.isEdit = true
     }
+    this.searchChannels()
   },
   watch: {
     '$route' (to, from) {
       if (!Object.keys(to.query).length) {
         this.searchHandle(3)
       }
+    },
+    searchChannels () {
+      this.$ajax({
+        url: '/store/user/code/queryAll',
+        success: data => {
+          this.channels = data.rows
+        }
+      })
     },
     zcChecked1 (val) {
       if (val) {

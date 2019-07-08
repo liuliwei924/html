@@ -135,12 +135,14 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="渠道来源:" v-if="isExport">
-              <el-input
-                class="kf-search-input"
-                v-model="searchForm.channelDetail"
-                placeholder="渠道来源">
-              </el-input>
+             <el-form-item v-if="userRole === '1'">>
+              <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择渠道代号">
+                <el-option
+                  v-for="(item,index) in channels"
+                  :label="item.channelCode"
+                  :value="item.channelCode" :key="index">
+                </el-option>
+              </el-select>
             </el-form-item>
             <el-form-item label="渠道类型">
                <el-select v-model="searchForm.channelType"
@@ -487,7 +489,7 @@ export default {
         storeSearchKey: store['storeSearchKey'] || '',
         curOrderStatus: store['curOrderStatus'] || 1,
         handleDesc: store['handleDesc'] || '',
-        channelDetail: store['channelDetail'] || '',
+        channelCode: store['channelCode'] || '',
         channelType: store['channelType'] || '',
         assetInfo: store['assetInfo'] || '',
         custLabel: store['custLabel'] || '',
@@ -537,6 +539,7 @@ export default {
       otherShow: false,
       userOrgs, // 门店数据
       cityList, // 城市数据
+      channels: [],
       orders: [], // table选中
       // 开始时间禁用
       startDateOptions: {
@@ -648,6 +651,15 @@ export default {
     let flag = this.searchForm.custLabel.length === 0 && this.searchForm.assetInfo.length === 0
     if (userType && searchFlag && flag) {
       this.highQuery = false
+    }
+
+    if(userType){
+       this.$ajax({
+        url: '/store/user/code/queryAll',
+        success: data => {
+          this.channels = data.rows
+        }
+      })
     }
   },
   watch: {
