@@ -135,7 +135,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-             <el-form-item v-if="userRole === '1'">>
+             <el-form-item v-if="userRole === '1'">
               <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择渠道代号">
                 <el-option
                   v-for="(item,index) in channels"
@@ -654,12 +654,7 @@ export default {
     }
 
     if(userType){
-       this.$ajax({
-        url: '/store/user/code/queryAll',
-        success: data => {
-          this.channels = data.rows
-        }
-      })
+       this.searchChannels()
     }
   },
   watch: {
@@ -671,6 +666,14 @@ export default {
   methods: {
     clickHighQ () {
       this.highQuery = !this.highQuery
+    },
+    searchChannels () {
+      this.$ajax({
+        url: '/store/user/code/queryAll',
+        success: data => {
+          this.channels = data.rows
+        }
+      })
     },
     exportData () {
       this.$refs.sumExport.show = true

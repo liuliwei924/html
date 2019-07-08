@@ -434,14 +434,6 @@ export default {
         this.searchHandle(3)
       }
     },
-    searchChannels () {
-      this.$ajax({
-        url: '/store/user/code/queryAll',
-        success: data => {
-          this.channels = data.rows
-        }
-      })
-    },
     zcChecked1 (val) {
       if (val) {
         if (this.multipleSelection < 1) {
@@ -481,6 +473,14 @@ export default {
   methods: {
     handleSelectionChange (val) {
       this.multipleSelection = val
+    },
+    searchChannels () {
+      this.$ajax({
+        url: '/store/user/code/queryAll',
+        success: data => {
+          this.channels = data.rows
+        }
+      })
     },
     // stage (status) {
     //   let ids = []
