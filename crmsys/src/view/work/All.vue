@@ -47,6 +47,10 @@
             </el-option-group>
           </el-select>
         </el-form-item>
+        <!-- <el-form-item>
+            <el-input v-model="searchForm.channelCode" placeholder="请选择渠道代号" class="kf-search-input"></el-input>
+        <el-form-item> -->
+        
         <el-form-item>
           <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择渠道代号">
             <el-option
@@ -56,6 +60,7 @@
             </el-option>
           </el-select>
         </el-form-item>
+        
           <el-form-item>
             <el-select v-model="searchForm.applyType" clearable placeholder="请选择单子类型">
               <el-option label="优质单" value="1"></el-option>
@@ -215,17 +220,7 @@
           min-width="120"
           prop="zimaScore"
           label="芝麻信用分">
-        </el-table-column><!--
-        <el-table-column
-          min-width="100"
-          prop="stageStatus"
-          label="库存展示">
-          <template slot-scope="scope">
-            <span v-if="scope.row.stageStatus === 1">展示</span>
-            <span v-if="scope.row.stageStatus === 2">展示待审</span>
-            <span v-if="scope.row.stageStatus === 3">展示拒绝</span>
-          </template>
-        </el-table-column> -->
+        </el-table-column>
         <el-table-column
           min-width="120"
           prop="status"
@@ -420,12 +415,6 @@ export default {
   created () {
     // !Object.keys(this.$route.query).length ? this.searchHandle(1) : this.searchHandle(2)
     this.cityList = JSON.parse(this.$localStorage('cityList')) || []
-    // 获取权限
-    let menuCode = this.$route.path.split('/')[2]
-    let checkUrl = this.$localStorage('kfCheckMenus')
-    if (checkUrl.indexOf(menuCode) >= 0) {
-      this.isEdit = true
-    }
     this.searchChannels()
   },
   watch: {
@@ -560,7 +549,7 @@ export default {
         endTime: query['endTime'] || '',
         applyName: query['applyName'] || '',
         cityName: query['cityName'] || '',
-        channelDetail: query['channelDetail'] || '',
+        channelCode: query['channelCode'] || '',
         applyType: query['applyType'] || '',
         status: query['status'] || '',
         kfName: query['kfName'] || '',
@@ -621,7 +610,7 @@ export default {
           endTime: initForm['endTime'],
           applyName: initForm['applyName'],
           cityName: initForm['cityName'],
-          channelDetail: initForm['channelDetail'],
+          channelCode: initForm['channelCode'],
           applyType: initForm['applyType'],
           status: initForm['status'],
           kfName: initForm['kfName'],

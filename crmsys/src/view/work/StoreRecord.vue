@@ -58,20 +58,7 @@
             placeholder="接单人姓名">
           </el-input>
         </el-form-item>
-        <el-form-item label="状态:">
-          <el-select
-            v-model="searchForm.status"
-            clearable
-            placeholder="请选择">
-            <el-option
-              v-for="val,key,index in status"
-              :label="val"
-              :value="Number(key)"
-              :key="index">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="门店状态:">
+        <el-form-item label="处理状态:">
           <el-select
             v-model="searchForm.orderStatus"
             clearable

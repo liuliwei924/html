@@ -135,8 +135,12 @@
                 </el-option>
               </el-select>
             </el-form-item>
-             <el-form-item v-if="userRole === '1'">
-              <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择渠道代号">
+             <!-- <el-form-item label="渠道">
+                  <el-input v-model="searchForm.channelCode" placeholder="请输入渠道代号" class="kf-search-input"></el-input>
+              <el-form-item> -->
+              
+             <el-form-item label="渠道代号" v-if="isAuth">
+              <el-select v-model="searchForm.channelCode" filterable clearable placeholder="请选择">
                 <el-option
                   v-for="(item,index) in channels"
                   :label="item.channelCode"
@@ -144,6 +148,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
+            
             <el-form-item label="渠道类型">
                <el-select v-model="searchForm.channelType"
                 clearable
@@ -534,6 +539,7 @@ export default {
       totalRecord: 0,
       applyId: '', // 申请ID
       isShow: false, // 弹窗是否显示
+      isAuth: isAuth,
       isAbandonShow: false, // 弹窗是否显示
       abandonData: {},
       otherShow: false,
@@ -653,8 +659,8 @@ export default {
       this.highQuery = false
     }
 
-    if(userType){
-       this.searchChannels()
+    if (this.$localStorage('userRole') === '1') {
+      this.searchChannels()
     }
   },
   watch: {
