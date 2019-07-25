@@ -42,8 +42,11 @@
             placeholder="结束月份">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="渠道代号">
-          <el-input v-model="searchForm.channelCode" placeholder="请输入渠道代号" class="kf-search-input"></el-input>
+        <el-form-item label="大渠道代号">
+          <el-input v-model="searchForm.channelCode" placeholder="请输入大渠道代号" class="kf-search-input"></el-input>
+        </el-form-item>
+         <el-form-item label="小渠道代号">
+          <el-input v-model="searchForm.channelDetail" placeholder="请输入小渠道代号" class="kf-search-input"></el-input>
         </el-form-item>
         <el-form-item label="申请城市">
           <el-select
@@ -150,6 +153,7 @@ export default {
       searchForm: {
         cityName: '',
         channelCode: '',
+        channelDetail: '',
         startRecordDate: dateNow,
         endRecordDate: dateNow2
       },

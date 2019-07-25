@@ -106,8 +106,7 @@
       class="content__page fr"
       @current-change="pageHandle"
       :current-page="searchForm.currentPage"
-      :page-sizes="[20]"
-      layout="total, sizes, prev, pager, next"
+      layout="total,prev, pager, next"
       :total="totalRecord">
     </el-pagination>
     <org-edit :isEdit="isEdit" :visible="visible" :orgInfo="orgInfo" @close="closeEdit"></org-edit>

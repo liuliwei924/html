@@ -124,8 +124,7 @@
       class="content__page fr"
       @current-change="pageHandle"
       :current-page="searchForm.currentPage"
-      :page-sizes="[20]"
-      layout="total, sizes, prev, pager, next"
+      layout="total, prev, pager, next"
       :total="totalRecord">
     </el-pagination>
     <workTime-add v-model="addShow" @change="addChange" :cityNameList="cityNameList" :userOrgs="userOrgs"/>
